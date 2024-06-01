@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civilization Balance Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .section select, .section input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .meter {
+            width: 100%;
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .meter span {
+            display: block;
+            height: 100%;
+            background-color: #76c7c0;
+            width: 0;
+            transition: width 0.3s;
+        }
+        .meter.overpowered span {
+            background-color: #ff6666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Civilization Balance Calculator</h1>
+        <div class="section">
+            <label for="techPoints">Technology Points Spent (Max 443, Recommended ~400):</label>
+            <input type="number" id="techPoints" max="443" min="0" value="0">
+        </div>
+        <div class="section">
+            <label for="civBonus">Civilization Bonuses (Max 3):</label>
+            <select id="civBonus1">
+                <option value="0">Select Civ Bonus 1</option>
+                <option value="2">Ordinary (2 points)</option>
+                <option value="3">Distinguished (3 points)</option>
+                <option value="4">Rare (4 points)</option>
+                <option value="5">Epic (5 points)</option>
+                <option value="6">Legendary (6 points)</option>
+            </select>
+            <select id="civBonus2">
+                <option value="0">Select Civ Bonus 2</option>
+                <option value="2">Ordinary (2 points)</option>
+                <option value="3">Distinguished (3 points)</option>
+                <option value="4">Rare (4 points)</option>
+                <option value="5">Epic (5 points)</option>
+                <option value="6">Legendary (6 points)</option>
+            </select>
+            <select id="civBonus3">
+                <option value="0">Select Civ Bonus 3</option>
+                <option value="2">Ordinary (2 points)</option>
+                <option value="3">Distinguished (3 points)</option>
+                <option value="4">Rare (4 points)</option>
+                <option value="5">Epic (5 points)</option>
+                <option value="6">Legendary (6 points)</option>
+            </select>
+        </div>
+        <div class="section">
+            <label for="castleUniqueUnit">Castle Unique Unit:</label>
+            <select id="castleUniqueUnit">
+                <option value="0">Select Castle Unique Unit</option>
+                <option value="2">Ordinary (2 points)</option>
+                <option value="3">Distinguished (3 points)</option>
+                <option value="4">Rare (4 points)</option>
+                <option value="5">Epic (5 points)</option>
+                <option value="6">Legendary (6 points)</option>
+            </select>
+        </div>
+        <div class="section">
+            <label for="castleUniqueTech">Castle Unique Tech:</label>
+            <select id="castleUniqueTech">
+                <option value="0">Select Castle Unique Tech</option>
+                <option value="2">Ordinary (2 points)</option>
+                <option value="3">Distinguished (3 points)</option>
+                <option value="4">Rare (4 points)</option>
+                <option value="5">Epic (5 points)</option>
+                <option value="6">Legendary (6 points)</option>
+            </select>
+        </div>
+        <div class="section">
+            <label for="imperialUniqueTech">Imperial Unique Tech:</label>
+            <select id="imperialUniqueTech">
+                <option value="0">Select Imperial Unique Tech</option>
+                <option value="2">Ordinary (2 points)</option>
+                <option value="3">Distinguished (3 points)</option>
+                <option value="4">Rare (4 points)</option>
+                <option value="5">Epic (5 points)</option>
+                <option value="6">Legendary (6 points)</option>
+            </select>
+        </div>
+        <div class="section">
+            <label for="teamBonus">Team Bonus:</label>
+            <select id="teamBonus">
+                <option value="0">Select Team Bonus</option>
+                <option value="2">Ordinary (2 points)</option>
+                <option value="3">Distinguished (3 points)</option>
+                <option value="4">Rare (4 points)</option>
+                <option value="5">Epic (5 points)</option>
+                <option value="6">Legendary (6 points)</option>
+            </select>
+        </div>
+        <div class="meter" id="meter">
+            <span id="meterBar"></span>
+        </div>
+        <p id="totalPoints">Total Points: 0 / 420</p>
+    </div>
+    <script>
+        const maxPoints = 420;
+
+        document.querySelectorAll('select, input').forEach(element => {
+            element.addEventListener('change', calculateTotalPoints);
+        });
+
+        function calculateTotalPoints() {
+            let techPoints = parseInt(document.getElementById('techPoints').value) || 0;
+            let civBonus1 = parseInt(document.getElementById('civBonus1').value) || 0;
+            let civBonus2 = parseInt(document.getElementById('civBonus2').value) || 0;
+            let civBonus3 = parseInt(document.getElementById('civBonus3').value) || 0;
+            let castleUniqueUnit = parseInt(document.getElementById('castleUniqueUnit').value) || 0;
+            let castleUniqueTech = parseInt(document.getElementById('castleUniqueTech').value) || 0;
+            let imperialUniqueTech = parseInt(document.getElementById('imperialUniqueTech').value) || 0;
+            let teamBonus = parseInt(document.getElementById('teamBonus').value) || 0;
+
+            let totalPoints = techPoints + civBonus1 + civBonus2 + civBonus3 + castleUniqueUnit + castleUniqueTech + imperialUniqueTech + teamBonus;
+
+            document.getElementById('totalPoints').innerText = `Total Points: ${totalPoints} / ${maxPoints}`;
+            let meterBar = document.getElementById('meterBar');
+            let meter = document.getElementById('meter');
+            meterBar.style.width = `${(totalPoints / maxPoints) * 100}%`;
+
+            if (totalPoints > maxPoints) {
+                meter.classList.add('overpowered');
+                document.getElementById('totalPoints').innerText += ' (Overpowered)';
+            } else {
+                meter.classList.remove('overpowered');
+            }
+        }
+    </script>
+</body>
+</html>
