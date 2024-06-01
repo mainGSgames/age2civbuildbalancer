@@ -64,7 +64,7 @@
     <div class="container">
         <h1>Civilization Balance Calculator</h1>
         <div class="section">
-            <label for="techPoints">Technology Points Spent (Max 443, Recommended ~396):</label>
+            <label for="techPoints">Technology Points Spent (Max 443, Recommended ~392):</label>
             <input type="number" id="techPoints" max="443" min="0" value="0">
         </div>
         <div class="section">
@@ -141,10 +141,10 @@
         <div class="meter" id="meter">
             <span id="meterBar"></span>
         </div>
-        <p id="totalPoints">Total Points: 0 / 420</p>
+        <p id="totalPoints">Total Points: 0 / 410</p>
     </div>
     <script>
-        const maxPoints = 420;
+        const maxPoints = 410;
 
         document.querySelectorAll('select, input').forEach(element => {
             element.addEventListener('change', calculateTotalPoints);
